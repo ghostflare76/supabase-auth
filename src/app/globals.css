@@ -37,3 +37,13 @@ body {
   from { transform: translateY(-100%); }
   to { transform: translateY(0); }
 }
+
+/* Remix 아이콘 관련 스타일 */
+:where([class^="ri-"])::before { 
+  content: "\f3c2"; 
+}
+
+/* Pacifico 폰트 관련 스타일 */
+.font-pacifico {
+  font-family: var(--font-pacifico);
+}
