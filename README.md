@@ -20,6 +20,20 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## 환경 변수 설정
+
+이 프로젝트는 다음과 같은 환경 변수를 사용합니다:
+
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase 프로젝트 URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase 익명 키
+- `SITE_URL`: 사이트 URL (기본값: http://localhost:3000)
+- `NODE_TLS_REJECT_UNAUTHORIZED`: SSL 인증서 검증 설정 (개발 환경에서만 '0'으로 설정)
+
+개발 환경에서는 `.env.development` 파일에 환경 변수를 설정하고, 프로덕션 환경에서는 `.env.production` 파일을 사용합니다.
+또한 `.env.local` 파일을 사용하여 모든 환경에서 공통으로 사용되는 환경 변수를 설정할 수 있습니다.
+
+**참고**: `NODE_TLS_REJECT_UNAUTHORIZED=0` 설정은 개발 환경에서만 사용하고, 프로덕션 환경에서는 사용하지 마세요.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
