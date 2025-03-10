@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TranslateX - 로그인</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+.toast {
+animation: slideIn 0.3s ease-in-out;
+}
+@keyframes slideIn {
+from { transform: translateY(-100%); }
+to { transform: translateY(0); }
+}
+</style>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#3176FF',
+secondary: '#1a1a1a'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+</head>
+<body class="bg-white min-h-screen">
+<div id="toast" class="hidden fixed top-0 left-0 right-0 z-50">
+<div class="bg-red-500 text-white px-4 py-3 text-center">
+<span id="toastMessage"></span>
+</div>
+</div>
+<header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-40">
+<div class="container mx-auto px-4 h-16 flex items-center justify-between">
+<a href="/" class="font-['Pacifico'] text-2xl text-gray-900">TranslateX</a>
+<div id="userInfo" class="hidden items-center space-x-4">
+<div class="flex items-center space-x-3">
+<img id="userAvatar" class="w-8 h-8 rounded-full" src="" alt="프로필 사진">
+<span id="userName" class="text-gray-900"></span>
+</div>
+<button onclick="showProfileModal()" class="text-gray-600 hover:text-primary px-3 py-1 rounded-button">
+<i class="ri-user-settings-line"></i>
+</button>
+<button onclick="logout()" class="text-gray-600 hover:text-primary px-3 py-1 rounded-button">
+<i class="ri-logout-box-line"></i>
+</button>
+</div>
+</div>
+</header>
+<main class="container mx-auto px-4 pt-32 pb-16">
+<div class="max-w-md mx-auto bg-white rounded-lg p-8 shadow-xl border border-gray-200">
+<h1 class="text-2xl font-bold text-gray-900 text-center mb-8">TranslateX에 오신 것을 환영합니다</h1>
+<div class="space-y-4">
+<button onclick="socialLogin('google')" class="w-full bg-white text-gray-800 flex items-center justify-center space-x-3 py-3 rounded-button hover:bg-gray-100 transition cursor-pointer border border-gray-200">
+<i class="ri-google-fill text-xl" style="color: #4285F4;"></i>
+<span>Google로 계속하기</span>
+</button>
+<button onclick="socialLogin('github')" class="w-full bg-gray-700 text-white flex items-center justify-center space-x-3 py-3 rounded-button hover:bg-gray-600 transition cursor-pointer">
+<i class="ri-github-fill text-xl" style="color: #ffffff;"></i>
+<span>GitHub로 계속하기</span>
+</button>
+<button onclick="socialLogin('kakao')" class="w-full bg-[#FEE500] text-gray-900 flex items-center justify-center space-x-3 py-3 rounded-button hover:bg-[#FDD800] transition cursor-pointer">
+<i class="ri-kakao-talk-fill text-2xl" style="color: #000000;"></i>
+<span>카카오로 계속하기</span>
+</button>
+<div class="relative my-6">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-gray-600"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-2 text-gray-500 bg-white">또는</span>
+</div>
+</div>
+<form id="emailForm" class="space-y-4">
+<div>
+<input type="email" id="email" placeholder="이메일" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary">
+</div>
+<div>
+<input type="password" id="password" placeholder="비밀번호" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary">
+</div>
+<button type="submit" class="w-full bg-primary text-white py-3 rounded-button hover:bg-blue-600 transition cursor-pointer">
+이메일로 로그인
+</button>
+</form>
+<p class="text-center text-gray-600 mt-4">
+계정이 없으신가요?
+<a href="#" class="text-primary hover:text-blue-400">회원가입</a>
+</p>
+</div>
+</div>
+</main>
+<div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+<div class="bg-white rounded-lg p-8 max-w-md w-full shadow-xl border border-gray-200">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-bold text-gray-900">프로필 수정</h2>
+<button onclick="closeProfileModal()" class="text-gray-400 hover:text-white">
+<i class="ri-close-line text-2xl"></i>
+</button>
+</div>
+<form id="profileForm" class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2">프로필 사진</label>
+<div class="flex items-center space-x-4">
+<img id="profilePreview" class="w-16 h-16 rounded-full" src="" alt="프로필 미리보기">
+<input type="file" id="profileImage" accept="image/*" class="hidden">
+<button type="button" onclick="document.getElementById('profileImage').click()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button hover:bg-gray-200 cursor-pointer">
+사진 변경
+</button>
+</div>
+</div>
+<div>
+<label for="displayName" class="block text-sm font-medium text-gray-700 mb-2">이름</label>
+<input type="text" id="displayName" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary">
+</div>
+<button type="submit" class="w-full bg-primary text-white py-3 rounded-button hover:bg-blue-600 transition cursor-pointer">
+저장하기
+</button>
+</form>
+</div>
+</div>
+<script>
+const mockUser = {
+isLoggedIn: false,
+name: '',
+email: '',
+avatar: ''
+};
+function showToast(message, type = 'error') {
+const toast = document.getElementById('toast');
+const toastMessage = document.getElementById('toastMessage');
+toast.classList.remove('hidden');
+toast.firstElementChild.className = type === 'error' ? 'bg-red-500 text-white px-4 py-3 text-center' : 'bg-green-500 text-white px-4 py-3 text-center';
+toastMessage.textContent = message;
+setTimeout(() => {
+toast.classList.add('hidden');
+}, 3000);
+}
+function updateUI() {
+const userInfo = document.getElementById('userInfo');
+if (mockUser.isLoggedIn) {
+document.getElementById('userAvatar').src = mockUser.avatar;
+document.getElementById('userName').textContent = mockUser.name;
+userInfo.classList.remove('hidden');
+userInfo.classList.add('flex');
+} else {
+userInfo.classList.add('hidden');
+userInfo.classList.remove('flex');
+}
+}
+function socialLogin(provider) {
+mockUser.isLoggedIn = true;
+mockUser.name = '김민준';
+mockUser.email = 'minjun.kim@example.com';
+mockUser.avatar = 'https://public.readdy.ai/ai/img_res/1670edea5ebff7b2a8aa106549f6892c.jpg';
+updateUI();
+showToast('로그인되었습니다.', 'success');
+}
+document.getElementById('emailForm').addEventListener('submit', (e) => {
+e.preventDefault();
+const email = document.getElementById('email').value;
+const password = document.getElementById('password').value;
+if (!email || !password) {
+showToast('이메일과 비밀번호를 입력해주세요.');
+return;
+}
+socialLogin('email');
+});
+function logout() {
+mockUser.isLoggedIn = false;
+mockUser.name = '';
+mockUser.email = '';
+mockUser.avatar = '';
+updateUI();
+showToast('로그아웃되었습니다.', 'success');
+}
+function showProfileModal() {
+document.getElementById('profileModal').classList.remove('hidden');
+document.getElementById('displayName').value = mockUser.name;
+document.getElementById('profilePreview').src = mockUser.avatar;
+}
+function closeProfileModal() {
+document.getElementById('profileModal').classList.add('hidden');
+}
+document.getElementById('profileForm').addEventListener('submit', (e) => {
+e.preventDefault();
+const newName = document.getElementById('displayName').value;
+if (newName) {
+mockUser.name = newName;
+updateUI();
+closeProfileModal();
+showToast('프로필이 업데이트되었습니다.', 'success');
+}
+});
+document.getElementById('profileImage').addEventListener('change', (e) => {
+const file = e.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = (e) => {
+document.getElementById('profilePreview').src = e.target.result;
+mockUser.avatar = e.target.result;
+};
+reader.readAsDataURL(file);
+}
+});
+</script>
+</body>
+</html>
