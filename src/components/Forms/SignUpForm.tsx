@@ -1,6 +1,6 @@
 "use client";
 
-import { signupWithEmailPassword, signInWithGoogle, signInWithGithub } from "@/utils/supabase/actions";
+import { signupWithEmailPassword, signInWithGoogle, signInWithGithub, signInWithKakao } from "@/utils/supabase/actions";
 import { useActionState } from "react";
 import Link from "next/link";
 
@@ -33,6 +33,16 @@ const SignUpForm = () => {
             <span>GitHub로 계속하기</span>
           </button>
         </form>
+
+        <form action={signInWithKakao}>
+          <button
+            type="submit"
+            className="w-full bg-[#FEE500] text-gray-900 flex items-center justify-center space-x-3 py-3 rounded-lg hover:bg-[#FDD800] transition cursor-pointer"
+          >
+            <i className="ri-kakao-talk-fill text-2xl" style={{ color: "#000000" }}></i>
+            <span>카카오로 계속하기</span>
+          </button>
+        </form>
         
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
@@ -42,6 +52,8 @@ const SignUpForm = () => {
             <span className="px-2 text-gray-500 bg-white">또는</span>
           </div>
         </div>
+
+
         
         <form action={formAction} className="space-y-4">
           <div>

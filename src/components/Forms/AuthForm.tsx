@@ -1,6 +1,6 @@
 "use client";
 
-import { signInWithGoogle, signInWithGithub } from "@/utils/supabase/actions";
+import { signInWithGoogle, signInWithGithub, signInWithKakao } from "@/utils/supabase/actions";
 import Link from "next/link";
 
 const AuthForm = () => {
@@ -25,6 +25,16 @@ const AuthForm = () => {
           >
             <i className="ri-github-fill text-xl" style={{ color: "#ffffff" }}></i>
             <span>GitHub로 계속하기</span>
+          </button>
+        </form>
+
+        <form action={signInWithKakao}>
+          <button
+            type="submit"
+            className="w-full bg-[#FEE500] text-gray-900 flex items-center justify-center space-x-3 py-3 rounded-lg hover:bg-[#FDD800] transition cursor-pointer"
+          >
+            <i className="ri-kakao-talk-fill text-2xl" style={{ color: "#000000" }}></i>
+            <span>카카오로 계속하기</span>
           </button>
         </form>
         

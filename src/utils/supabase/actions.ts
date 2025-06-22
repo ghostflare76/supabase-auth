@@ -81,10 +81,12 @@ const signOut = async () => {
 
 const signInWithGoogle = signInWith("google");
 const signInWithGithub = signInWith("github");
+const signInWithKakao = signInWith("kakao");
 
 export { 
   signInWithGoogle, 
   signInWithGithub, 
+  signInWithKakao,
   signupWithEmailPassword, 
   signinWithEmailPassword, 
   signOut
